@@ -110,7 +110,7 @@ function AiChatPage({ userName }) {
   return (
     <div className="aichat-container">
       <h2>AI語音對話頁面</h2>
-      <div style={{ marginBottom: 20 }}>
+      <div className="aichat-welcome">
         歡迎，{userName}！
       </div>
       {/* 情境選擇按鈕 */}

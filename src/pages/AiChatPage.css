@@ -112,3 +112,10 @@
   background: #bdbdbd;
   cursor: not-allowed;
 }
+
+.aichat-welcome {
+  font-size: 18px;
+  color: #3949ab;
+  margin-bottom: 20px;
+  font-weight: 500;
+}

@@ -7,97 +7,56 @@
   box-shadow: 0 6px 32px rgba(30, 40, 90, 0.11), 0 2px 8px rgba(30, 40, 90, 0.08);
   font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
   text-align: center;
-}
-
-.main-container h2 {
+  }
+  .main-container h2 {
   margin-bottom: 18px;
   color: #26326a;
   letter-spacing: 1px;
-}
-
-.main-welcome {
+  }
+  .main-welcome {
   font-size: 18px;
   color: #3949ab;
   margin-bottom: 28px;
   font-weight: 500;
-}
-
-/* 讓每日挑戰和最近完成日期兩框同高同寬 */
-.main-daily-challenge-row {
+  }
+  
+  /* 每日挑戰區塊（內部左右） */
+  .main-daily-challenge-row {
   display: flex;
-  gap: 16px;
+  gap: 18px;
   margin-bottom: 28px;
-  justify-content: space-between;
   align-items: stretch;
-}
-
-.main-daily-challenge-col,
-.main-daily-recent-col {
-  flex: 1;
-  min-width: 0;
   background: #f6f8fc;
   border-radius: 12px;
-  padding: 18px 18px 14px 18px;
   box-shadow: 0 1px 6px rgba(60,80,160,0.08);
+  padding: 18px 18px 14px 18px;
+  text-align: left;
+  }
+  
+  /* 左側內容 */
+  .main-daily-challenge-content {
+  flex: 2;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-}
-
-.main-daily-recent-col {
-  align-items: flex-start;
-}
-
-.main-daily-recent-col .main-recent-title {
-  font-size: 15px;
-  font-weight: bold;
-  color: #3949ab;
-  margin-bottom: 8px;
-}
-
-.main-recent-list {
-  padding-left: 16px;
-  margin: 0;
-  color: #26326a;
-  font-size: 14px;
-}
-
-.main-recent-list li {
-  margin-bottom: 4px;
-}
-
-.main-recent-loading {
-  color: #888;
-  font-style: italic;
-}
-
-.main-recent-none {
-  color: #bdbdbd;
-}
-
-.main-daily-challenge {
-  /* 已合併到 .main-daily-challenge-col */
-  text-align: left;
-}
-
-.main-challenge-title {
+  }
+  .main-challenge-title {
   font-size: 18px;
   color: #3949ab;
   font-weight: bold;
   margin-bottom: 4px;
-}
-
-.main-challenge-desc {
+  margin-top: 18px;
+  }
+  .main-challenge-desc {
   font-size: 15px;
   color: #26326a;
   margin-bottom: 6px;
-}
-
-.main-challenge-status {
+  }
+  .main-challenge-status {
   margin-bottom: 8px;
-}
-
-.main-challenge-btn {
+  }
+  .main-challenge-btn {
   padding: 7px 18px;
   border-radius: 6px;
   border: none;
@@ -107,60 +66,101 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.18s;
-}
-
-.main-challenge-btn:hover {
+  }
+  .main-challenge-btn:hover {
   background: #2e7031;
-}
-
-.main-challenge-done {
+  }
+  .main-challenge-done {
   color: #388e3c;
   font-weight: bold;
-}
-
-.main-challenge-notyet {
+  }
+  .main-challenge-notyet {
   color: #d32f2f;
   font-weight: bold;
-}
-
-.main-challenge-loading {
+  }
+  .main-challenge-loading {
   color: #888;
   font-style: italic;
-}
-
-.main-challenge-friends {
+  }
+  .main-challenge-friends {
   margin-top: 6px;
   font-size: 14px;
   color: #3949ab;
-}
-
-.main-challenge-friend-title {
+  }
+  .main-challenge-friend-title {
   font-weight: bold;
   margin-right: 6px;
-}
-
-.main-challenge-friend {
+  }
+  .main-challenge-friend {
   background: #e1bee7;
   color: #3949ab;
   border-radius: 6px;
   padding: 2px 10px;
   margin-right: 6px;
   display: inline-block;
-}
-
-.main-challenge-none {
+  }
+  .main-challenge-none {
   color: #bdbdbd;
-}
-
-.main-menu {
+  }
+  
+  /* 迷你日曆 */
+  .main-mini-calendar {
+  flex: 1;
+  min-width: 50%;
+  background: #f3f3f7;
+  border-radius: 12px;
+  padding: 14px 10px 10px 10px;
+  box-shadow: 0 1px 6px rgba(60,80,160,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  }
+  .main-calendar-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #3949ab;
+  margin-bottom: 8px;
+  text-align: center;
+  }
+  .main-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  }
+  .main-calendar-cell {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #3949ab;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  }
+  .main-calendar-cell.done {
+  background: #43a047;
+  color: #fff;
+  }
+  .main-calendar-cell.today {
+  border: 2px solid #3949ab;
+  }
+  
+  /* 主選單 */
+  .main-menu {
   display: flex;
   flex-direction: column;
   gap: 18px;
   align-items: center;
-}
-
-.main-menu button {
-  width: 100%;          /* 填滿 .main-menu */
+  }
+  .main-menu button {
+  /* width: 220px; */
+  width: 100%;
   padding: 12px 0;
   border: none;
   border-radius: 7px;
@@ -171,32 +171,32 @@
   cursor: pointer;
   transition: background 0.18s, transform 0.12s;
   box-shadow: 0 2px 8px rgba(60, 80, 160, 0.10);
-}
-
-.main-menu button:hover {
+  }
+  .main-menu button:hover {
   background: linear-gradient(90deg, #3949ab 0%, #5c6bc0 100%);
   transform: translateY(-2px) scale(1.03);
-}
-
-@media (max-width: 700px) {
+  }
+  
+  /* 響應式 */
+  @media (max-width: 700px) {
   .main-daily-challenge-row {
-    flex-direction: column;
-    gap: 0;
+  flex-direction: column;
+  gap: 0;
+  padding: 10px 6px 8px 6px;
   }
-  .main-daily-recent-col {
-    margin-top: 14px;
-    width: 100%;
-    align-items: flex-start;
+  .main-mini-calendar {
+  margin-top: 14px;
+  width: 100%;
+  align-items: center;
   }
-}
-
-@media (max-width: 500px) {
+  }
+  @media (max-width: 500px) {
   .main-container {
-    max-width: 98vw;
-    padding: 18px 4vw 18px 4vw;
+  max-width: 98vw;
+  padding: 18px 4vw 18px 4vw;
   }
   .main-menu button {
-    width: 95vw;
-    min-width: 0;
+  width: 95vw;
+  min-width: 0;
   }
-}
+  }

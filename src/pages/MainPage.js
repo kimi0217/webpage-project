@@ -9,8 +9,8 @@ function MainPage({ userName }) {
   const [challengeDone, setChallengeDone] = useState(false);
   const [friendList, setFriendList] = useState([]);
   const [friendsDone, setFriendsDone] = useState([]);
-  const [recentDates, setRecentDates] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [completedDates, setCompletedDates] = useState([]);
 
   // 取得今日日期字串
   const today = new Date();
@@ -41,24 +41,37 @@ function MainPage({ userName }) {
       });
       setFriendsDone(done);
 
-      // 4. 取得最近幾天的完成紀錄
-      const recentDays = 5;
-      const recent = [];
-      for (let i = 0; i < recentDays; i++) {
+      // 4. 取得最近 21 天完成紀錄
+      const days = 21;
+      const completed = [];
+      for (let i = 0; i < days; i++) {
         const d = new Date();
-        d.setDate(today.getDate() - i);
+        d.setDate(today.getDate() - (days - 1 - i));
         const dStr = d.toISOString().slice(0, 10);
         const recDoc = await getDoc(doc(db, 'DailyChallenge', dStr, 'users', userName));
         if (recDoc.exists() && recDoc.data().completed) {
-          recent.push(dStr);
+          completed.push(dStr);
         }
       }
-      setRecentDates(recent.reverse()); // 由舊到新
+      setCompletedDates(completed);
       setLoading(false);
     }
     if (userName) fetchChallenge();
     // eslint-disable-next-line
   }, [userName]);
+
+  // 產生最近 21 天日期陣列
+  function getRecentDays(days = 21) {
+    const arr = [];
+    for (let i = 0; i < days; i++) {
+      const d = new Date();
+      d.setDate(today.getDate() - (days - 1 - i));
+      arr.push(d.toISOString().slice(0, 10));
+    }
+    return arr;
+  }
+
+  const recentDays = getRecentDays();
 
   return (
     <div className="main-container">
@@ -67,9 +80,9 @@ function MainPage({ userName }) {
         歡迎，{userName}！
       </div>
 
-      {/* 每日挑戰區塊 */}
+      {/* 每日挑戰區塊（內部左右排） */}
       <div className="main-daily-challenge-row">
-        <div className="main-daily-challenge main-daily-challenge-col">
+        <div className="main-daily-challenge-content">
           <div className="main-challenge-title">📅 每日挑戰</div>
           <div className="main-challenge-desc">今天學習一個新單字！</div>
           <div className="main-challenge-status">
@@ -94,29 +107,38 @@ function MainPage({ userName }) {
             )}
           </div>
         </div>
-        <div className="main-daily-recent-col">
-          <div className="main-recent-title">最近完成日期</div>
-          {loading ? (
-            <div className="main-recent-loading">載入中...</div>
-          ) : recentDates.length === 0 ? (
-            <div className="main-recent-none">最近沒有完成紀錄</div>
-          ) : (
-            <ul className="main-recent-list">
-              {recentDates.map(date => (
-                <li key={date}>{date}</li>
-              ))}
-            </ul>
-          )}
+        {/* 迷你日曆 */}
+        <div className="main-mini-calendar">
+          <div className="main-calendar-title">最近 21 天</div>
+          <div className="main-calendar-grid">
+            {recentDays.map(date => {
+              const d = new Date(date);
+              const day = d.getDate();
+              const isDone = completedDates.includes(date);
+              return (
+                <div
+                  key={date}
+                  className={`main-calendar-cell${isDone ? ' done' : ''}${date === dateStr ? ' today' : ''}`}
+                  title={date}
+                >
+                  {day}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <div className="main-menu">
-        <button onClick={() => navigate('/ai-chat')}>AI語音對話</button>
-        <button onClick={() => navigate('/conversations')}>歷史對話</button>
-        <button onClick={() => navigate('/vocabulary')}>學習單字</button>
-        <button onClick={() => navigate('/medals')}>勳章系統</button>
-        <button onClick={() => navigate('/friends')}>好友與排行榜</button>
+          <button onClick={() => navigate('/ai-chat')}>AI語音對話</button>
+          <button onClick={() => navigate('/conversations')}>歷史對話</button>
+          <button onClick={() => navigate('/vocabulary')}>學習單字</button>
+          <button onClick={() => navigate('/medals')}>勳章系統</button>
+        <button className="main-menu-full" onClick={() => navigate('/friends')}>
+          好友與排行榜
+        </button>
       </div>
+
     </div>
   );
 }
