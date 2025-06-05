@@ -4,6 +4,9 @@ import './MainPage.css';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 
+// 輔助函式：補零
+const pad = n => String(n).padStart(2, '0');
+
 function MainPage({ userName }) {
   const navigate = useNavigate();
   const [challengeDone, setChallengeDone] = useState(false);
@@ -11,10 +14,10 @@ function MainPage({ userName }) {
   const [friendsDone, setFriendsDone] = useState([]);
   const [loading, setLoading] = useState(true);
   const [completedDates, setCompletedDates] = useState([]);
-
-  // 取得今日日期字串
+  
+  // 本地時區的今天日期字串
   const today = new Date();
-  const dateStr = today.toISOString().slice(0, 10); // yyyy-mm-dd
+  const dateStr = today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate());
 
   useEffect(() => {
     async function fetchChallenge() {
@@ -45,9 +48,9 @@ function MainPage({ userName }) {
       const days = 21;
       const completed = [];
       for (let i = 0; i < days; i++) {
-        const d = new Date();
+        const d = new Date(today);
         d.setDate(today.getDate() - (days - 1 - i));
-        const dStr = d.toISOString().slice(0, 10);
+        const dStr = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
         const recDoc = await getDoc(doc(db, 'DailyChallenge', dStr, 'users', userName));
         if (recDoc.exists() && recDoc.data().completed) {
           completed.push(dStr);
@@ -58,15 +61,16 @@ function MainPage({ userName }) {
     }
     if (userName) fetchChallenge();
     // eslint-disable-next-line
-  }, [userName]);
+  }, [userName, dateStr]);
 
   // 產生最近 21 天日期陣列
   function getRecentDays(days = 21) {
     const arr = [];
     for (let i = 0; i < days; i++) {
-      const d = new Date();
+      const d = new Date(today);
       d.setDate(today.getDate() - (days - 1 - i));
-      arr.push(d.toISOString().slice(0, 10));
+      const dStr = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+      arr.push(dStr);
     }
     return arr;
   }
@@ -76,6 +80,9 @@ function MainPage({ userName }) {
   return (
     <div className="main-container">
       <h2>主畫面</h2>
+      {/* <p style={{ color: '#3949ab', fontSize: 15, marginBottom: 10 }}>
+        今天日期：{dateStr}
+      </p> */}
       <div style={{ marginBottom: 20 }} className="main-welcome">
         歡迎，{userName}！
       </div>
@@ -130,15 +137,14 @@ function MainPage({ userName }) {
       </div>
 
       <div className="main-menu">
-          <button onClick={() => navigate('/ai-chat')}>AI語音對話</button>
-          <button onClick={() => navigate('/conversations')}>歷史對話</button>
-          <button onClick={() => navigate('/vocabulary')}>學習單字</button>
-          <button onClick={() => navigate('/medals')}>勳章系統</button>
+        <button onClick={() => navigate('/ai-chat')}>AI語音對話</button>
+        <button onClick={() => navigate('/conversations')}>歷史對話</button>
+        <button onClick={() => navigate('/vocabulary')}>學習單字</button>
+        <button onClick={() => navigate('/medals')}>勳章系統</button>
         <button className="main-menu-full" onClick={() => navigate('/friends')}>
           好友與排行榜
         </button>
       </div>
-
     </div>
   );
 }
