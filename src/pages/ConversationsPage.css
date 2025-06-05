@@ -1,0 +1,61 @@
+.conv-container {
+    max-width: 520px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 32px 32px 60px 32px;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  }
+  
+  .conv-welcome {
+    font-size: 17px;
+    color: #3949ab;
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  
+  .conv-loading {
+    color: #888;
+    font-style: italic;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .conv-empty {
+    color: #bdbdbd;
+    text-align: center;
+    margin: 24px 0;
+  }
+  
+  .conv-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  
+  .conv-record {
+    background: #f6f8fc;
+    border-radius: 10px;
+    padding: 14px 18px 36px 18px;
+    box-shadow: 0 1px 4px rgba(60,80,160,0.06);
+  }
+  
+  .conv-time {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 6px;
+    text-align: right;
+  }
+  
+  .conv-q, .conv-a {
+    margin: 2px 0;
+    font-size: 15px;
+    word-break: break-word;
+  }
+  
+  .conv-label {
+    font-weight: bold;
+    color: #3949ab;
+    margin-right: 4px;
+  }  

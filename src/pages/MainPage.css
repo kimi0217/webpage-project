@@ -1,0 +1,61 @@
+.main-container {
+    max-width: 520px;
+    margin: 40px auto;
+    padding: 32px 32px 60px 32px; /* 這裡的第三個數字（60px）就是底部留白 */
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(30, 40, 90, 0.11), 0 2px 8px rgba(30, 40, 90, 0.08);
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    text-align: center;
+  }
+  
+  .main-container h2 {
+    margin-bottom: 18px;
+    color: #26326a;
+    letter-spacing: 1px;
+  }
+  
+  .main-welcome {
+    font-size: 18px;
+    color: #3949ab;
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+  
+  .main-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  
+  .main-menu button {
+    width: 220px;
+    padding: 12px 0;
+    border: none;
+    border-radius: 7px;
+    background: linear-gradient(90deg, #5c6bc0 0%, #3949ab 100%);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+    box-shadow: 0 2px 8px rgba(60, 80, 160, 0.10);
+  }
+  
+  .main-menu button:hover {
+    background: linear-gradient(90deg, #3949ab 0%, #5c6bc0 100%);
+    transform: translateY(-2px) scale(1.03);
+  }
+  
+  @media (max-width: 500px) {
+    .main-container {
+      max-width: 98vw;
+      padding: 18px 4vw 18px 4vw;
+    }
+    .main-menu button {
+      width: 95vw;
+      min-width: 0;
+    }
+  }
+  

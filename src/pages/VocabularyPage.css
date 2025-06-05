@@ -1,0 +1,114 @@
+.vocab-container {
+    max-width: 520px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 32px 32px 60px 32px;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    text-align: center;
+  }
+  
+  .vocab-welcome {
+    font-size: 17px;
+    color: #3949ab;
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  
+  .vocab-loading {
+    color: #888;
+    font-style: italic;
+    margin: 20px 0;
+  }
+  
+  .vocab-card {
+    background: #f6f8fc;
+    border-radius: 10px;
+    padding: 18px 16px 20px 16px;
+    margin: 0 auto;
+    box-shadow: 0 1px 4px rgba(60,80,160,0.08);
+    max-width: 340px;
+  }
+  
+  .vocab-question {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  
+  .vocab-label {
+    font-weight: bold;
+    color: #3949ab;
+    margin-right: 4px;
+  }
+  
+  .vocab-english {
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: #26326a;
+  }
+  
+  .vocab-answer {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .vocab-input {
+    padding: 8px 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #bdbdbd;
+    width: 140px;
+  }
+  
+  .vocab-btn {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background: #3949ab;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  
+  .vocab-btn:disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+  }
+  
+  .vocab-result {
+    margin-top: 12px;
+    font-size: 16px;
+  }
+  
+  .vocab-chinese {
+    color: #2e7031;
+    font-weight: bold;
+    margin-left: 4px;
+  }
+  
+  .vocab-pass-btns {
+    margin-top: 10px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  
+  .vocab-btn.pass {
+    background: #43a047;
+  }
+  .vocab-btn.fail {
+    background: #d32f2f;
+  }
+  
+  .vocab-finish {
+    color: #388e3c;
+    font-size: 18px;
+    margin-top: 38px;
+    font-weight: bold;
+  }
+  

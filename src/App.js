@@ -1,24 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import MainPage from './pages/MainPage';
+import AiChatPage from './pages/AiChatPage';
+import MedalPage from './pages/MedalPage';
+import FriendPage from './pages/FriendPage';
+import ConversationsPage from './pages/ConversationsPage';
+import VocabularyPage from './pages/VocabularyPage';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <LoginPage
+              onLogin={(name) => {
+                setIsLoggedIn(true);
+                setUserName(name);
+              }}
+            />
+          }
+        />
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? <MainPage userName={userName} /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/ai-chat"
+          element={
+            isLoggedIn ? <AiChatPage userName={userName} /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/medals"
+          element={
+            isLoggedIn ? <MedalPage userName={userName} /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/friends"
+          element={
+            isLoggedIn ? <FriendPage userName={userName} /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/conversations"
+          element={
+            isLoggedIn ? <ConversationsPage userName={userName} /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/vocabulary"
+          element={
+            isLoggedIn ? <VocabularyPage userName={userName} /> : <Navigate to="/login" replace />
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 

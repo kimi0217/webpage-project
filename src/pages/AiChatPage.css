@@ -1,0 +1,88 @@
+.aichat-container {
+    max-width: 520px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 32px 32px 60px 32px;
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  }
+  
+  .aichat-chatbox {
+    min-height: 220px;
+    max-height: 320px;
+    background: #f6f8fc;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    overflow-y: auto;
+  }
+  
+  .aichat-msg {
+    margin: 8px 0;
+    max-width: 75%;
+    word-break: break-word;
+    padding: 8px 12px;
+    border-radius: 7px;
+    font-size: 15px;
+    display: inline-block;
+  }
+  
+  .aichat-msg.user {
+    background: #c5cae9;
+    color: #222;
+    align-self: flex-end;
+    float: right;
+    clear: both;
+  }
+  
+  .aichat-msg.assistant {
+    background: #e1bee7;
+    color: #222;
+    align-self: flex-start;
+    float: left;
+    clear: both;
+  }
+  
+  .aichat-msg-label {
+    font-weight: bold;
+    margin-right: 2px;
+  }
+  
+  .aichat-loading {
+    color: #888;
+    font-style: italic;
+    margin-top: 4px;
+  }
+  
+  .aichat-inputbox {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .aichat-input {
+    flex: 1;
+    border-radius: 6px;
+    border: 1px solid #bdbdbd;
+    padding: 8px;
+    font-size: 16px;
+    resize: none;
+  }
+  
+  .aichat-sendbtn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    background: #3949ab;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  
+  .aichat-sendbtn:disabled {
+    background: #bdbdbd;
+    cursor: not-allowed;
+  }
+  
