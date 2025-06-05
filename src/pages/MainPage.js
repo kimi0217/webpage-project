@@ -9,6 +9,7 @@ function MainPage({ userName }) {
   const [challengeDone, setChallengeDone] = useState(false);
   const [friendList, setFriendList] = useState([]);
   const [friendsDone, setFriendsDone] = useState([]);
+  const [recentDates, setRecentDates] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // 取得今日日期字串
@@ -39,6 +40,20 @@ function MainPage({ userName }) {
         }
       });
       setFriendsDone(done);
+
+      // 4. 取得最近幾天的完成紀錄
+      const recentDays = 5;
+      const recent = [];
+      for (let i = 0; i < recentDays; i++) {
+        const d = new Date();
+        d.setDate(today.getDate() - i);
+        const dStr = d.toISOString().slice(0, 10);
+        const recDoc = await getDoc(doc(db, 'DailyChallenge', dStr, 'users', userName));
+        if (recDoc.exists() && recDoc.data().completed) {
+          recent.push(dStr);
+        }
+      }
+      setRecentDates(recent.reverse()); // 由舊到新
       setLoading(false);
     }
     if (userName) fetchChallenge();
@@ -53,28 +68,44 @@ function MainPage({ userName }) {
       </div>
 
       {/* 每日挑戰區塊 */}
-      <div className="main-daily-challenge">
-        <div className="main-challenge-title">📅 每日挑戰</div>
-        <div className="main-challenge-desc">今天學習一個新單字！</div>
-        <div className="main-challenge-status">
-          {loading ? (
-            <span className="main-challenge-loading">載入中...</span>
-          ) : challengeDone ? (
-            <span className="main-challenge-done">你已完成今日挑戰</span>
-          ) : (
-            <span className="main-challenge-notyet">尚未完成，快去學習單字！</span>
-          )}
+      <div className="main-daily-challenge-row">
+        <div className="main-daily-challenge main-daily-challenge-col">
+          <div className="main-challenge-title">📅 每日挑戰</div>
+          <div className="main-challenge-desc">今天學習一個新單字！</div>
+          <div className="main-challenge-status">
+            {loading ? (
+              <span className="main-challenge-loading">載入中...</span>
+            ) : challengeDone ? (
+              <span className="main-challenge-done">你已完成今日挑戰</span>
+            ) : (
+              <span className="main-challenge-notyet">尚未完成，快去學習單字！</span>
+            )}
+          </div>
+          <div className="main-challenge-friends">
+            <span className="main-challenge-friend-title">今日完成的好友：</span>
+            {loading ? (
+              <span className="main-challenge-loading">載入中...</span>
+            ) : friendsDone.length === 0 ? (
+              <span className="main-challenge-none">暫無好友完成</span>
+            ) : (
+              friendsDone.map(name => (
+                <span key={name} className="main-challenge-friend">{name}</span>
+              ))
+            )}
+          </div>
         </div>
-        <div className="main-challenge-friends">
-          <span className="main-challenge-friend-title">今日完成的好友：</span>
+        <div className="main-daily-recent-col">
+          <div className="main-recent-title">最近完成日期</div>
           {loading ? (
-            <span className="main-challenge-loading">載入中...</span>
-          ) : friendsDone.length === 0 ? (
-            <span className="main-challenge-none">暫無好友完成</span>
+            <div className="main-recent-loading">載入中...</div>
+          ) : recentDates.length === 0 ? (
+            <div className="main-recent-none">最近沒有完成紀錄</div>
           ) : (
-            friendsDone.map(name => (
-              <span key={name} className="main-challenge-friend">{name}</span>
-            ))
+            <ul className="main-recent-list">
+              {recentDates.map(date => (
+                <li key={date}>{date}</li>
+              ))}
+            </ul>
           )}
         </div>
       </div>

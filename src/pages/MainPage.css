@@ -22,12 +22,61 @@
   font-weight: 500;
 }
 
-.main-daily-challenge {
+/* 讓每日挑戰和最近完成日期兩框同高同寬 */
+.main-daily-challenge-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.main-daily-challenge-col,
+.main-daily-recent-col {
+  flex: 1;
+  min-width: 0;
   background: #f6f8fc;
   border-radius: 12px;
   padding: 18px 18px 14px 18px;
-  margin-bottom: 28px;
   box-shadow: 0 1px 6px rgba(60,80,160,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.main-daily-recent-col {
+  align-items: flex-start;
+}
+
+.main-daily-recent-col .main-recent-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #3949ab;
+  margin-bottom: 8px;
+}
+
+.main-recent-list {
+  padding-left: 16px;
+  margin: 0;
+  color: #26326a;
+  font-size: 14px;
+}
+
+.main-recent-list li {
+  margin-bottom: 4px;
+}
+
+.main-recent-loading {
+  color: #888;
+  font-style: italic;
+}
+
+.main-recent-none {
+  color: #bdbdbd;
+}
+
+.main-daily-challenge {
+  /* 已合併到 .main-daily-challenge-col */
   text-align: left;
 }
 
@@ -111,7 +160,7 @@
 }
 
 .main-menu button {
-  width: 220px;
+  width: 100%;          /* 填滿 .main-menu */
   padding: 12px 0;
   border: none;
   border-radius: 7px;
@@ -127,6 +176,18 @@
 .main-menu button:hover {
   background: linear-gradient(90deg, #3949ab 0%, #5c6bc0 100%);
   transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width: 700px) {
+  .main-daily-challenge-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .main-daily-recent-col {
+    margin-top: 14px;
+    width: 100%;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 500px) {
