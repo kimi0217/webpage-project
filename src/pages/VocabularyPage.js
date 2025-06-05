@@ -10,7 +10,11 @@ function VocabularyPage({ userName }) {
   const [input, setInput] = useState('');
   const [showAnswer, setShowAnswer] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [passLoading, setPassLoading] = useState(false); // 新增
+  const [passLoading, setPassLoading] = useState(false);
+
+  // 取得今日日期字串
+  const today = new Date();
+  const dateStr = today.toISOString().slice(0, 10); // yyyy-mm-dd
 
   // 取得單字庫和用戶學習紀錄
   useEffect(() => {
@@ -58,6 +62,15 @@ function VocabularyPage({ userName }) {
       { passed }
     );
     setUserPassed(prev => ({ ...prev, [currentWord.id]: passed }));
+
+    // 自動標記每日挑戰（只要今天還沒完成且本題是學會就標記）
+    if (passed) {
+      await setDoc(
+        doc(db, 'DailyChallenge', dateStr, 'users', userName),
+        { completed: true }
+      );
+    }
+
     setPassLoading(false);
     // 不需要額外 setCurrentWord，因為 userPassed 改變後 useEffect 會自動抽下一題
   }
