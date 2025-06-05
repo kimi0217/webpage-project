@@ -3,14 +3,47 @@ import './AiChatPage.css';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
-const GEMINI_API_KEY = '你的API_KEY'; // 帳號申請還沒通過
+const GEMINI_API_KEY = '你的API_KEY';
+
+// 可自訂多個情境
+const SCENARIOS = [
+  {
+    key: 'default',
+    label: '一般對話',
+    prompt: 'Hi! What do you want to talk to me about today?'
+  },
+  {
+    key: 'airport',
+    label: '機場英文',
+    prompt: 'You are at the airport. Let\'s practice a conversation: "Hello, I would like to check in for my flight to London."'
+  },
+  {
+    key: 'restaurant',
+    label: '餐廳點餐',
+    prompt: 'You are at a restaurant. Let\'s practice: "Hi, I would like to order a steak and a salad, please."'
+  },
+  {
+    key: 'hospital',
+    label: '醫院看診',
+    prompt: 'You are visiting a doctor. Let\'s practice: "Doctor, I have a headache and a sore throat."'
+  }
+];
 
 function AiChatPage({ userName }) {
+  const [scenario, setScenario] = useState(SCENARIOS[0].key);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hi! What do you want to talk to me about today?' }
+    { role: 'assistant', content: SCENARIOS[0].prompt }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // 切換情境
+  function handleScenarioChange(key) {
+    const selected = SCENARIOS.find(s => s.key === key);
+    setScenario(key);
+    setMessages([{ role: 'assistant', content: selected.prompt }]);
+    setInput('');
+  }
 
   async function handleSend() {
     if (!input.trim()) return;
@@ -57,6 +90,7 @@ function AiChatPage({ userName }) {
           user_name: userName,
           user_input: input,
           ai_response: aiReply,
+          scenario: scenario,
           timestamp: new Date()
         }
       );
@@ -78,6 +112,19 @@ function AiChatPage({ userName }) {
       <h2>AI語音對話頁面</h2>
       <div style={{ marginBottom: 20 }}>
         歡迎，{userName}！
+      </div>
+      {/* 情境選擇按鈕 */}
+      <div className="aichat-scenarios">
+        {SCENARIOS.map(s => (
+          <button
+            key={s.key}
+            className={`aichat-scenario-btn${scenario === s.key ? ' selected' : ''}`}
+            onClick={() => handleScenarioChange(s.key)}
+            disabled={loading}
+          >
+            {s.label}
+          </button>
+        ))}
       </div>
       <div className="aichat-chatbox">
         {messages.map((msg, idx) => (
