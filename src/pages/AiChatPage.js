@@ -81,7 +81,7 @@ function AiChatPage({ userName }) {
     let aiReply = 'Sorry, the AI ​​service failed.';
 
     try {
-      const systemPrompt = '若使用者輸入的英文沒有錯誤，直接與他對談。若有文法或是用字等錯誤，請用中文糾正他。使用者輸入：';
+      const systemPrompt = '「若使用者輸入的英文沒有錯誤，直接用英文與他對談。若有文法或是用字等錯誤，請用中文糾正他。」使用者輸入：';
       const apiMessages = newMessages.map((msg, idx) => {
         if (msg.role === 'user' && idx === newMessages.length - 1) {
           return {
