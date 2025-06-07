@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './AiChatPage.css';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
-const GEMINI_API_KEY = '你的API_KEY';
+const GEMINI_API_KEY = ''; //填入api key
 
-// 可自訂多個情境
 const SCENARIOS = [
   {
     key: 'default',
@@ -36,8 +35,35 @@ function AiChatPage({ userName }) {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [sttActive, setSttActive] = useState(false);
+  const recognitionRef = useRef(null);
 
-  // 切換情境
+  // STT 啟動
+  function handleStartSTT() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('此瀏覽器不支援語音辨識，請使用 Chrome 或 Edge');
+      return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US'; // 可改 zh-TW、en-US
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => setSttActive(true);
+    recognition.onend = () => setSttActive(false);
+    recognition.onerror = () => setSttActive(false);
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+      setSttActive(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  }
+
   function handleScenarioChange(key) {
     const selected = SCENARIOS.find(s => s.key === key);
     setScenario(key);
@@ -55,18 +81,26 @@ function AiChatPage({ userName }) {
     let aiReply = 'Sorry, the AI ​​service failed.';
 
     try {
-      // Gemini API 請求
+      const systemPrompt = '若使用者輸入的英文沒有錯誤，直接與他對談。若有文法或是用字等錯誤，請用中文糾正他。使用者輸入：';
+      const apiMessages = newMessages.map((msg, idx) => {
+        if (msg.role === 'user' && idx === newMessages.length - 1) {
+          return {
+            role: msg.role,
+            parts: [{ text: systemPrompt + msg.content }]
+          };
+        }
+        return {
+          role: msg.role,
+          parts: [{ text: msg.content }]
+        };
+      });
+
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${GEMINI_API_KEY}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: newMessages.map(msg => ({
-              role: msg.role,
-              parts: [{ text: msg.content }]
-            }))
-          })
+          body: JSON.stringify({ contents: apiMessages })
         }
       );
       const data = await response.json();
@@ -83,7 +117,6 @@ function AiChatPage({ userName }) {
       }
       setMessages([...newMessages, { role: 'assistant', content: aiReply }]);
 
-      // === 新增：每次都新增一筆對話到 Conversations ===
       await addDoc(
         collection(db, 'Conversations'),
         {
@@ -113,7 +146,6 @@ function AiChatPage({ userName }) {
       <div className="aichat-welcome">
         歡迎，{userName}！
       </div>
-      {/* 情境選擇按鈕 */}
       <div className="aichat-scenarios">
         {SCENARIOS.map(s => (
           <button
@@ -156,6 +188,24 @@ function AiChatPage({ userName }) {
           disabled={loading}
         >
           發送
+        </button>
+        <button
+          className="aichat-sttbtn"
+          onClick={handleStartSTT}
+          disabled={loading || sttActive}
+          style={{
+            marginLeft: 8,
+            background: sttActive ? '#bdbdbd' : '#43a047',
+            color: '#fff',
+            fontWeight: 600,
+            borderRadius: 6,
+            border: 'none',
+            padding: '8px 14px',
+            cursor: sttActive ? 'not-allowed' : 'pointer',
+            transition: 'background 0.18s'
+          }}
+        >
+          {sttActive ? '語音辨識中...' : '語音輸入'}
         </button>
       </div>
     </div>
