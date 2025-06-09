@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PageHeader from '../components/PageHeader'; 
+import { useAuth } from '../contexts/AuthContext';
 import './FriendPage.css';
 import { collection, doc, getDoc, setDoc, getDocs, query, where, documentId } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -13,27 +14,8 @@ const MEDALS = [
   { id: 'conv100', type: 'conversation', target: 100 }
 ];
 
-function FriendPage({ userName }) {
-  // *** HIGHLIGHT START: 新增模式切換的邏輯 (與主頁面相同) ***
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) { return savedTheme === 'dark'; }
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-  });
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => setIsDarkMode(prev => !prev);
-  // *** HIGHLIGHT END ***
-
+function FriendPage() {
+  const { userName } = useAuth();
   const [friendInput, setFriendInput] = useState('');
   const [friends, setFriends] = useState([]);
   const [friendStats, setFriendStats] = useState([]);
@@ -111,15 +93,11 @@ function FriendPage({ userName }) {
 
   return (
     <div className="friend-container">
-      {/* *** HIGHLIGHT START: 新增 Header，包含標題和切換按鈕 *** */}
       <PageHeader 
         title="好友與排行榜"
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        showBackButton={true} // 明確告訴組件要顯示返回按鈕
+        showBackButton={true}
       />
       <div className="friend-welcome">歡迎，{userName}！</div>
-      {/* *** HIGHLIGHT END *** */}
 
       <div className="friend-add">
         <input

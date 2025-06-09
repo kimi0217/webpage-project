@@ -1,43 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../components/PageHeader'; 
+import { useAuth } from '../contexts/AuthContext';
 import './MedalPage.css';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 
-// 勳章定義可以移到組件外部，因為它不會改變
+// 勳章定義
 const MEDALS = [
-  { id: 'vocab10', name: '單字新手', type: 'vocab', target: 10, description: '學習通過10個單字' },
-  { id: 'vocab30', name: '單字高手', type: 'vocab', target: 30, description: '學習通過30個單字' },
-  { id: 'conv10', name: '對話新手', type: 'conversation', target: 10, description: '完成10次AI對話' },
-  { id: 'conv50', name: '對話達人', type: 'conversation', target: 50, description: '完成50次AI對話' },
-  { id: 'conv100', name: '聊天大師', type: 'conversation', target: 100, description: '完成100次AI對話' }
+  { id: 'vocab10', name: '單字初學者', description: '學會 10 個單字', type: 'vocab', target: 10 },
+  { id: 'vocab30', name: '單字達人', description: '學會 30 個單字', type: 'vocab', target: 30 },
+  { id: 'conv10', name: '對話新手', description: '完成 10 次對話', type: 'conversation', target: 10 },
+  { id: 'conv50', name: '對話高手', description: '完成 50 次對話', type: 'conversation', target: 50 },
+  { id: 'conv100', name: '對話大師', description: '完成 100 次對話', type: 'conversation', target: 100 }
 ];
 
-function MedalPage({ userName }) {
-  // *** HIGHLIGHT START: 新增模式切換的邏輯 (與主頁面相同) ***
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      return savedTheme === 'dark';
-    }
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
-  // *** HIGHLIGHT END ***
-
+function MedalPage() {
+  const { userName } = useAuth();
   const [vocabCount, setVocabCount] = useState(0);
   const [convCount, setConvCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -79,17 +57,13 @@ function MedalPage({ userName }) {
 
   return (
     <div className="medal-container">
-      {/* *** HIGHLIGHT START: 新增 Header，包含標題和切換按鈕 *** */}
       <PageHeader 
         title="勳章系統"
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        showBackButton={true} // 明確告訴組件要顯示返回按鈕
+        showBackButton={true}
       />
       <div className="medal-welcome">
         歡迎，{userName}！
       </div>
-      {/* *** HIGHLIGHT END *** */}
 
       {loading ? (
         <div className="medal-loading">載入勳章進度中...</div>

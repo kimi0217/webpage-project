@@ -1,34 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import PageHeader from '../components/PageHeader'; 
+import PageHeader from '../components/PageHeader';
+import { useAuth } from '../contexts/AuthContext';
 import './ConversationsPage.css';
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 
-function ConversationsPage({ userName }) {
-  // *** HIGHLIGHT START: 新增模式切換的邏輯 (與主頁面相同) ***
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      return savedTheme === 'dark';
-    }
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
-  // *** HIGHLIGHT END ***
-
+function ConversationsPage() {
+  const { userName } = useAuth();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -64,17 +42,13 @@ function ConversationsPage({ userName }) {
 
   return (
     <div className="conv-container">
-      {/* *** HIGHLIGHT START: 新增 Header，包含標題和切換按鈕 *** */}
       <PageHeader 
         title="對話歷史"
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        showBackButton={true} // 明確告訴組件要顯示返回按鈕
+        showBackButton={true}
       />
       <div className="conv-welcome">
         歡迎，{userName}！
       </div>
-      {/* *** HIGHLIGHT END *** */}
 
       {loading ? (
         <div className="conv-loading">載入中...</div>

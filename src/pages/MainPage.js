@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../components/PageHeader'; 
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './MainPage.css';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -10,30 +11,9 @@ const getISODateString = (date) => {
   return date.toISOString().slice(0, 10);
 };
 
-function MainPage({ userName }) {
+function MainPage() {
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      return savedTheme === 'dark';
-    }
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
-  
+  const { userName } = useAuth();
   const [friendsDone, setFriendsDone] = useState([]);
   const [loading, setLoading] = useState(true);
   const [completedDates, setCompletedDates] = useState(new Set());
@@ -88,14 +68,10 @@ function MainPage({ userName }) {
 
   return (
     <div className="main-container">
-      {/* *** HIGHLIGHT START: 已移除多餘的 h1 和 h2 標題 *** */}
      <PageHeader
         title="主畫面"
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        showBackButton={false} // 特別設定為 false，因為主畫面不需要返回按鈕
+        showBackButton={false}
       />
-      {/* *** HIGHLIGHT END *** */}
       <div className="main-welcome">
         歡迎，{userName}！
       </div>
@@ -151,6 +127,7 @@ function MainPage({ userName }) {
         <button onClick={() => navigate('/ai-chat')}>AI語音對話</button>
         <button onClick={() => navigate('/conversations')}>歷史對話</button>
         <button onClick={() => navigate('/vocabulary')}>學習單字</button>
+        <button onClick={() => navigate('/text-analyzer')}>📝 文本分析器</button>
         <button onClick={() => navigate('/medals')}>勳章系統</button>
         <button onClick={() => navigate('/friends')}>好友與排行榜</button>
       </div>

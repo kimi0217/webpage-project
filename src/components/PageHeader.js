@@ -1,9 +1,21 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useTheme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
 import './PageHeader.css';
 
-function PageHeader({ title, showBackButton = true, isDarkMode, toggleTheme }) {
+function PageHeader({ title, showBackButton = true }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isDarkMode, toggleTheme } = useTheme();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const isMainPage = location.pathname === '/' && !showBackButton;
 
   return (
     <div className="page-header">
@@ -15,6 +27,16 @@ function PageHeader({ title, showBackButton = true, isDarkMode, toggleTheme }) {
           aria-label="返回主畫面"
         >
           ← {/* 這是一個左箭頭符號 */}
+        </button>
+      )}
+      
+      {isMainPage && (
+        <button 
+          onClick={handleLogout}
+          className="logout-button" 
+          aria-label="登出"
+        >
+          登出
         </button>
       )}
       

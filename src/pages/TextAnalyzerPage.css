@@ -1,0 +1,491 @@
+/* TextAnalyzerPage.css - 文本分析器樣式 */
+
+/* --- 1. CSS 變數定義 (繼承主題變數) --- */
+/* 使用與 MainPage.css 相同的變數系統 */
+
+/* --- 2. 容器與佈局 --- */
+.text-analyzer-container {
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 32px;
+  background: var(--bg-tertiary);
+  border-radius: 20px;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.text-analyzer-welcome {
+  font-size: 18px;
+  color: var(--text-accent);
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+
+/* --- 3. 文本輸入區域 --- */
+.text-input-section {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.input-instructions {
+  margin-bottom: 20px;
+}
+
+.input-instructions h3 {
+  color: var(--text-accent);
+  font-size: 18px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-instructions p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* --- 3.5. 語言切換區域 --- */
+.language-toggle-section {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  border: 1px solid var(--calendar-day-bg);
+}
+
+.language-toggle-label {
+  display: block;
+  color: var(--text-accent);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.language-toggle-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.language-toggle-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: 2px solid var(--calendar-day-bg);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.language-toggle-btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: var(--bg-primary);
+}
+
+.language-toggle-btn.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--text-on-accent);
+}
+
+.language-toggle-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.language-toggle-description {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+  font-style: italic;
+}
+
+.text-input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 120px;
+  margin-bottom: 16px;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.1);
+}
+
+.text-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.generate-button {
+  width: 100%;
+  padding: 14px 0;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: var(--text-on-accent);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-light);
+}
+
+.generate-button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--shadow-color);
+}
+
+.generate-button:disabled {
+  background: var(--text-placeholder);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- 4. 載入狀態 --- */
+.loading-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--text-placeholder);
+  border-top: 4px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* --- 5. 測驗容器 --- */
+.quiz-container {
+  text-align: left;
+}
+
+.quiz-question {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.question-number {
+  font-weight: bold;
+  color: var(--text-accent);
+  font-size: 16px;
+}
+
+.question-type {
+  background: var(--color-primary);
+  color: var(--text-on-accent);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.question-text {
+  font-size: 16px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* --- 6. 選擇題選項 --- */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-button {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--calendar-day-bg);
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-button:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: var(--bg-secondary);
+}
+
+.option-button.selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--text-on-accent);
+}
+
+.option-button.correct {
+  border-color: var(--text-success);
+  background: var(--calendar-day-completed-bg);
+  color: var(--calendar-day-completed-text);
+}
+
+.option-button.incorrect {
+  border-color: var(--text-danger);
+  background: #ffebee;
+  color: var(--text-danger);
+}
+
+.option-button:disabled {
+  cursor: not-allowed;
+}
+
+/* 深夜模式下的錯誤選項樣式 */
+body.dark-mode .option-button.incorrect {
+  background: #4a2c2a;
+  color: var(--text-danger);
+}
+
+/* --- 7. 填空題 --- */
+.fill-blank-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fill-blank-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--calendar-day-bg);
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.fill-blank-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.fill-blank-input.correct {
+  border-color: var(--text-success);
+  background: var(--calendar-day-completed-bg);
+  color: var(--calendar-day-completed-text);
+}
+
+.fill-blank-input.incorrect {
+  border-color: var(--text-danger);
+  background: #ffebee;
+  color: var(--text-danger);
+}
+
+/* 深夜模式下的填空題錯誤樣式 */
+body.dark-mode .fill-blank-input.incorrect {
+  background: #4a2c2a;
+  color: var(--text-danger);
+}
+
+.answer-feedback {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  border-left: 4px solid var(--color-primary);
+}
+
+.correct-feedback {
+  color: var(--text-success);
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.incorrect-feedback {
+  color: var(--text-danger);
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.explanation {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+  font-style: italic;
+}
+
+/* --- 8. 測驗操作區域 --- */
+.quiz-actions {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.submit-quiz-button {
+  width: 240px;
+  padding: 14px 0;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: var(--text-on-accent);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-light);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submit-quiz-button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px var(--shadow-color);
+}
+
+.submit-quiz-button:disabled {
+  background: var(--text-placeholder);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- 9. 測驗結果 --- */
+.quiz-results {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.score-display {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--text-accent);
+  margin-bottom: 20px;
+}
+
+.results-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.new-quiz-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: var(--text-on-accent);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.new-quiz-button:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+}
+
+/* --- 10. 響應式設計 --- */
+@media (max-width: 500px) {
+  .text-analyzer-container {
+    max-width: 100%;
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+    padding: 24px 16px;
+    box-shadow: none;
+  }
+
+  .question-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .submit-quiz-button {
+    width: 100%;
+  }
+
+  .results-actions {
+    flex-direction: column;
+  }
+
+  .new-quiz-button {
+    width: 100%;
+  }
+
+  .language-toggle-buttons {
+    flex-direction: column;
+  }
+}
+
+/* --- 11. 動畫增強 --- */
+.quiz-question {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quiz-results {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} 

@@ -1,30 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import './LoginPage.css';
 
-function LoginPage({ onLogin }) {
-  // *** HIGHLIGHT START: 新增模式切換的邏輯 (與主頁面相同) ***
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) { return savedTheme === 'dark'; }
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-  });
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => setIsDarkMode(prev => !prev);
-  // *** HIGHLIGHT END ***
-
+function LoginPage() {
+  const { isDarkMode, toggleTheme } = useTheme();
+  const { login } = useAuth();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState({ text: '', type: '' }); // 合併 error 和 success 狀態
@@ -42,7 +26,7 @@ function LoginPage({ onLogin }) {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists() && password === docSnap.data().password) {
-      if (onLogin) onLogin(userName.trim());
+      login(userName.trim());
       navigate('/');
     } else {
       setMsg({ text: '名稱或密碼錯誤', type: 'error' });
@@ -71,14 +55,12 @@ function LoginPage({ onLogin }) {
 
   return (
     <div className="login-container">
-      {/* *** HIGHLIGHT START: 新增 Header，包含標題和切換按鈕 *** */}
       <div className="login-header">
         <h2>登入 / 註冊</h2>
         <button onClick={toggleTheme} className="theme-toggle-button" aria-label="切換主題">
           {isDarkMode ? '☀️' : '🌙'}
         </button>
       </div>
-      {/* *** HIGHLIGHT END *** */}
       
       <form onSubmit={handleLogin} className="login-form">
         <div className="form-group">

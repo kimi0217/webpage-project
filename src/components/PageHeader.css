@@ -16,7 +16,7 @@
   text-align: center;
 }
 
-.back-button, .theme-toggle-button {
+.back-button, .theme-toggle-button, .logout-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -40,11 +40,22 @@
   font-size: 28px;
 }
 
+.logout-button {
+  left: -10px; /* 稍微往外放一點 */
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--text-secondary);
+}
+
 .theme-toggle-button {
   right: -10px; /* 稍微往外放一點 */
 }
 
-.back-button:hover, .theme-toggle-button:hover {
+.back-button:hover, .theme-toggle-button:hover, .logout-button:hover {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
 }

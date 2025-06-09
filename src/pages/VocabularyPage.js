@@ -1,34 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader from '../components/PageHeader'; 
+import { useAuth } from '../contexts/AuthContext';
 import './VocabularyPage.css';
 import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
-function VocabularyPage({ userName }) {
-  // *** HIGHLIGHT START: 新增模式切換的邏輯 (與主頁面相同) ***
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      return savedTheme === 'dark';
-    }
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
-  // *** HIGHLIGHT END ***
-
+function VocabularyPage() {
+  const { userName } = useAuth();
   const [vocabList, setVocabList] = useState([]);
   const [currentWord, setCurrentWord] = useState(null);
   const [userPassed, setUserPassed] = useState({});
@@ -99,17 +77,13 @@ function VocabularyPage({ userName }) {
 
   return (
     <div className="vocab-container">
-      {/* *** HIGHLIGHT START: 新增 Header，包含標題和切換按鈕 *** */}
       <PageHeader 
         title="學習單字"
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        showBackButton={true} // 明確告訴組件要顯示返回按鈕
+        showBackButton={true}
       />
       <div className="vocab-welcome">
         歡迎，{userName}！
       </div>
-      {/* *** HIGHLIGHT END *** */}
       
       {loading ? (
         <div className="vocab-loading">載入單字庫中...</div>
