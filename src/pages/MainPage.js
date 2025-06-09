@@ -127,7 +127,7 @@ function MainPage() {
         <button onClick={() => navigate('/ai-chat')}>AI語音對話</button>
         <button onClick={() => navigate('/conversations')}>歷史對話</button>
         <button onClick={() => navigate('/vocabulary')}>學習單字</button>
-        <button onClick={() => navigate('/text-analyzer')}>📝 文本分析器</button>
+        <button onClick={() => navigate('/text-analyzer')}>文章分析器</button>
         <button onClick={() => navigate('/medals')}>勳章系統</button>
         <button onClick={() => navigate('/friends')}>好友與排行榜</button>
       </div>

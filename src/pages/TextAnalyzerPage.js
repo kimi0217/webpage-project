@@ -249,7 +249,7 @@ ${text}
     return (
       <div className="text-analyzer-container">
         <PageHeader 
-          title="文本分析器"
+          title="文章分析器"
           showBackButton={true}
         />
         <div className="text-analyzer-welcome">
@@ -258,13 +258,13 @@ ${text}
 
         <div className="text-input-section">
           <div className="input-instructions">
-            <h3>🎯 如何使用</h3>
+            <h3>如何使用</h3>
             <p>貼上任何英文文章、新聞或段落，我們將為您生成個人化的詞彙和理解測驗！</p>
           </div>
 
           <div className="language-toggle-section">
             <label className="language-toggle-label">
-              📝 測驗題目語言：
+              測驗題目語言：
             </label>
             <div className="language-toggle-buttons">
               <button
@@ -291,7 +291,7 @@ ${text}
           
           <textarea
             className="text-input"
-            placeholder="請貼上您想要學習的英文文本..."
+            placeholder="請貼上您想要學習的英文文章段落..."
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             rows={8}
@@ -303,14 +303,14 @@ ${text}
             onClick={handleGenerateQuiz}
             disabled={!inputText.trim() || isLoading}
           >
-            {isLoading ? '生成中...' : '🚀 生成測驗'}
+            {isLoading ? '生成中...' : '生成測驗'}
           </button>
         </div>
 
         {isLoading && (
           <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p>AI 正在分析您的文本並生成測驗...</p>
+            <p>AI 正在分析您的文字內容並生成測驗...</p>
           </div>
         )}
       </div>
@@ -320,7 +320,7 @@ ${text}
   return (
     <div className="text-analyzer-container">
       <PageHeader 
-        title="文本分析器"
+        title="文章分析器"
         showBackButton={true}
       />
       <div className="text-analyzer-welcome">
