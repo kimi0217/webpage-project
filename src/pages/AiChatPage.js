@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import PageHeader from '../components/PageHeader'; 
+import React, { useState, useRef } from 'react';
+import PageHeader from '../components/PageHeader';
 import { useAuth } from '../contexts/AuthContext';
 import './AiChatPage.css';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
-const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY; // 請記得替換成你的金鑰
-
+const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
 const SCENARIOS = [
   { key: 'default', label: '一般對話', prompt: 'Hi! What do you want to talk to me about today?' },
@@ -23,8 +22,35 @@ function AiChatPage() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
 
-  // 切換情境 (邏輯不變)
+  // 語音辨識啟動
+  function startListening() {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'zh-TW'; // 可改 en-US, zh-TW
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = () => setIsListening(true);
+      recognition.onend = () => setIsListening(false);
+      recognition.onerror = () => setIsListening(false);
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(transcript);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } else {
+      alert('您的瀏覽器不支援語音辨識，請使用 Chrome 或 Edge。');
+    }
+  }
+
+  // 切換情境
   function handleScenarioChange(key) {
     const selected = SCENARIOS.find(s => s.key === key);
     setScenario(key);
@@ -32,7 +58,7 @@ function AiChatPage() {
     setInput('');
   }
 
-  // 發送訊息 (邏輯不變)
+  // 發送訊息
   async function handleSend() {
     if (!input.trim()) return;
     const newMessages = [...messages, { role: 'user', content: input }];
@@ -132,6 +158,13 @@ function AiChatPage() {
           disabled={loading}
         >
           發送
+        </button>
+        <button
+          className="aichat-sttbtn"
+          onClick={startListening}
+          disabled={loading || isListening}
+        >
+          {isListening ? '辨識中...' : '語音輸入'}
         </button>
       </div>
     </div>
