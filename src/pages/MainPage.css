@@ -193,17 +193,19 @@ body {
   border-color: var(--calendar-day-current-border);  /* 保留藍色外框 */
 }
 /* *** HIGHLIGHT END *** */
-
 .main-menu {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;   /* 改為 row */
+  flex-wrap: wrap;       /* 自動換行 */
   gap: 16px;
+  justify-content: center; /* 置中排列 */
   align-items: center;
   margin-top: 24px;
 }
 
 .main-menu button {
-  width: 240px;
+  width: calc(50% - 8px); /* 倆倆排列，扣掉 gap 的一半 */
+  max-width: 240px;       /* 保留最大寬度 */
   padding: 14px 0;
   border: none;
   border-radius: 10px;
@@ -221,6 +223,7 @@ body {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px var(--shadow-color);
 }
+
 
 /* --- 5. 響應式設計 (RWD) --- */
 @media (max-width: 500px) {
