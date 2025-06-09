@@ -134,7 +134,13 @@ ${text}
   function calculateScore() {
     let correct = 0;
     quizData.forEach((question, index) => {
-      if (userAnswers[index] === question.answer) {
+      const userAnswer = userAnswers[index]?.trim().toLowerCase();
+      const correctAnswer = question.answer?.trim().toLowerCase();
+      
+      // 檢查是否完全匹配或部分匹配
+      if (userAnswer === correctAnswer || 
+          (userAnswer && correctAnswer && 
+           (userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer)))) {
         correct++;
       }
     });
@@ -151,7 +157,12 @@ ${text}
   function renderQuestion(question, index) {
     const userAnswer = userAnswers[index];
     const isAnswered = userAnswer !== undefined;
-    const isCorrect = userAnswer === question.answer;
+    const normalizedUserAnswer = userAnswer?.trim().toLowerCase();
+    const normalizedCorrectAnswer = question.answer?.trim().toLowerCase();
+    const isCorrect = normalizedUserAnswer === normalizedCorrectAnswer || 
+                     (normalizedUserAnswer && normalizedCorrectAnswer && 
+                      (normalizedUserAnswer.includes(normalizedCorrectAnswer) || 
+                       normalizedCorrectAnswer.includes(normalizedUserAnswer)));
 
     if (question.questionType === 'fill_in_the_blank') {
       return (
