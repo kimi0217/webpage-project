@@ -69,6 +69,7 @@ function AiChatPage() {
     let aiReply = '抱歉，AI 服務發生錯誤。';
 
     try {
+      const systemPrompt = '若使用者輸入的英文沒有錯誤，直接與他對談。若有文法或是用字等錯誤，請用中文糾正他。使用者輸入：';
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${GEMINI_API_KEY}`,
         {
@@ -77,7 +78,7 @@ function AiChatPage() {
           body: JSON.stringify({
             contents: newMessages.map(msg => ({
               role: msg.role,
-              parts: [{ text: msg.content }]
+              parts: [{ text: systemPrompt + msg.content }]
             }))
           })
         }
